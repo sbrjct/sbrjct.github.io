@@ -1,1 +1,1 @@
-A collection of class related lessons, tutorials, and general thoughts.
+Pages of outlines and demos for multivariable calculus.
