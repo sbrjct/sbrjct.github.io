@@ -1600,7 +1600,7 @@ mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
   font-family: MJXTEX-VB;
   src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
 }
-</style><style type="text/css">.output_e6ca598dea844f5e8719ea5e3851980b .sagecell_messages, .output_e6ca598dea844f5e8719ea5e3851980b .sagecell_permalink {display: none;}</style></head>
+</style><style type="text/css">.output_c718e3cf024540f3ac8f8cfe66ed6e07 .sagecell_messages, .output_c718e3cf024540f3ac8f8cfe66ed6e07 .sagecell_permalink {display: none;}</style></head>
 <body>
 <div id="main">
             
@@ -1610,7 +1610,7 @@ mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
 <p>Another strategy is to take your data and fit a linear function (that minimizes the distance between each point and the line). A linear relationship is often a reasonable starting assumption. The process of finding this best fit linear function is called <em>linear regression</em>.</p>
 <p>No matter which you technique you choose (via a drop down menu), you must enter your <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span> and <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">y</span></span></span></span></span> data as a list of numbers separated by commas. Be sure that the data is entered so that the values in similar positions correspond to each other. I've included graphs of the function and data for visual purposes.</p>
 </div><div class="nb-cell nb-markdown-cell"><h2 id="best-fit">Best Fit</h2>
-</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="2" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">@interact
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="5" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">@interact
 
 def _(x_list=input_box([1,2],label='$x$ data'),\
       y_list=input_box([3,4],label='$y$ data'),\
@@ -1628,7 +1628,7 @@ def _(x_list=input_box([1,2],label='$x$ data'),\
     
     #Reconstruct the polynomial of best fit to the data
     if model=='non-linear':
-        func=sum([coeffs[i].rhs()*x^i for i in range(size)])
+        func=sum([coeffs[i].rhs().n(digits=4)*x^i for i in range(size)])
     if model=='linear':
         func=coeffs[0].rhs()+coeffs[1].rhs()*x
     print('The best fit polynomial to the data is:')
@@ -1636,11 +1636,11 @@ def _(x_list=input_box([1,2],label='$x$ data'),\
     
     #produce a graph showing the data and the polynomial to gauge fit
     show(list_plot(list(zip(x_list,y_list)),size=20,color='red',legend_label="Data")+\
-         plot(func,(x,0,70),color='black',legend_label='$P(x)$'))</code></pre></div><div class="nb-output" data-prompt-number="2" style="display: none;"><pre class="nb-text-output">Interactive function &lt;function _ at 0x13995ce00&gt; with 3 widgets
+         plot(func,(x,0,70),color='black',legend_label='$P(x)$'))</code></pre></div><div class="nb-output" data-prompt-number="5" style="display: none;"><pre class="nb-text-output">Interactive function &lt;function _ at 0x14c7bf740&gt; with 3 widgets
   x_list: EvalText(value='[1, 2]', description='$x$ data', layout=Layout(max_width='81em'))
   y_list: EvalText(value='[3, 4]', description='$y$ data', layout=Layout(max_width='81em'))
   model: Dropdown(description='fit model', options=('non-linear', 'linear'), value='non-linear')</pre></div>
-  <div class="compute sagecell output_e6ca598dea844f5e8719ea5e3851980b" style="display: none;">
+  <div class="compute sagecell output_c718e3cf024540f3ac8f8cfe66ed6e07" style="display: none;">
 
 <div class="sagecell-templates hide"></div>
 <div class="sagecell_output_elements" style="display: none;">
@@ -1670,7 +1670,7 @@ def _(x_list=input_box([1,2],label='$x$ data'),\
     
     #Reconstruct the polynomial of best fit to the data
     if model=='non-linear':
-        func=sum([coeffs[i].rhs()*x^i for i in range(size)])
+        func=sum([coeffs[i].rhs().n(digits=4)*x^i for i in range(size)])
     if model=='linear':
         func=coeffs[0].rhs()+coeffs[1].rhs()*x
     print('The best fit polynomial to the data is:')
@@ -1692,7 +1692,7 @@ def _(x_list=input_box([1,2],label='$x$ data'),\
   <script src="https://dahn-research.eu/nbplayer/nbplayerConfig.js"></script>
   <script src="https://dahn-research.eu/nbplayer/js/nbrunner.min.js"></script>
   <script>
-    playerConfig={"panes":"ExecRead","lang":"sage","linked":true,"eval":false,"hide":["fullScreen"],"execute":true,"showRead":true,"collapsable":false,"playerPath":"https://dahn-research.eu/nbplayer","name":"Best Fit-2"};
+    playerConfig={"panes":"ExecRead","lang":"sage","linked":true,"eval":false,"hide":["fullScreen"],"execute":true,"showRead":true,"collapsable":false,"playerPath":"https://dahn-research.eu/nbplayer","name":"Best Fit-4"};
     playerMode={"showSage":true,"showNotebookInput":true,"showSageInput":true};
     makeMenu();
     localize();
