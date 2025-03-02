@@ -1673,14 +1673,14 @@ mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
   font-family: MJXTEX-VB;
   src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
 }
-</style><style type="text/css">.output_626780d3414e4fd5884af264c2fb0fe5 .sagecell_messages, .output_626780d3414e4fd5884af264c2fb0fe5 .sagecell_permalink {display: none;}</style><style type="text/css">.output_ffb412a1c873412da5b16fb1feded94e .sagecell_messages, .output_ffb412a1c873412da5b16fb1feded94e .sagecell_permalink {display: none;}</style></head>
+</style><style type="text/css">.output_b9e3835203364ce987058c7bdcce6a40 .sagecell_messages, .output_b9e3835203364ce987058c7bdcce6a40 .sagecell_permalink {display: none;}</style><style type="text/css">.output_1acb058ad2d042db92b06e3b7e633cbe .sagecell_messages, .output_1acb058ad2d042db92b06e3b7e633cbe .sagecell_permalink {display: none;}</style></head>
 <body>
 <div id="main">
             
             
             
             <div id="notebook-holder"><div class="nb-notebook"><div class="nb-worksheet"><div class="nb-cell nb-markdown-cell"><h2 id="damage-formulas-update-after-verifying-some-values">Damage formulas (update after verifying some values)</h2>
-</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="4" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#Variables
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="30" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#Variables
 base_raw,base_element = var('B_r,B_e')
 
 #Rise functions and data (melee)
@@ -1727,10 +1727,10 @@ def raw_vs_ele(raw_hz, ele_hz, sharpness='G', motion_value=100,
     if ele_hz==0: return 10
     else: ratio = (solve(efr-efe,base_element)[0]/base_raw).rhs()
     return ratio</code></pre></div>
-  <div class="compute sagecell output_626780d3414e4fd5884af264c2fb0fe5" style="display: none;">
+  <div class="compute sagecell output_b9e3835203364ce987058c7bdcce6a40" style="display: none;">
 
 <div class="sagecell-templates hide"></div>
-<div class="sagecell_output_elements" style="">
+<div class="sagecell_output_elements" style="display: none;">
     
     <div class="sagecell_messages">
         <hr>
@@ -1788,31 +1788,36 @@ def raw_vs_ele(raw_hz, ele_hz, sharpness='G', motion_value=100,
     return ratio
 </script>
   </div></div><div class="nb-cell nb-markdown-cell"><h2 id="simulation">Simulation</h2>
-</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="26" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">var('raw_hz,ele_hz,sharpness,motion_value,affinity,crit_boost,crit_element')
+</div><div class="nb-cell nb-markdown-cell"><ul>
+<li>Use Total Elemental Modifier to enter whatever appropriate modifiers are coming from skills.</li>
+<li>Use eMV to, in addition, account for the total elemental modifier coming from a sequence of moves being analyzed. This parameter is only here to simplify calculation of EFE vs ERE.</li>
+</ul>
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="34" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">var('raw_hz,ele_hz,sharpness,motion_value,affinity,crit_boost,crit_element')
 var('flat_raw_mod,base_raw_mod,total_raw_mod,flat_ele_mod,base_ele_mod,total_ele_mod')
 var('t')
 
 @interact
-def _(base_raw=input_box(100,label='Weapon Raw'),
-      base_element=input_box(10,label='Weapon Element'),
-      sharpness=('Sharpness level', slider(['R','Y','G','B','W','P'],default='G')),
-      motion_value=input_box(100,label='Total motion value'),
-      affinity=input_box(0,label='Affinity'),
-      crit_boost=('Critical Boost',slider([0,1,2,3])),
-      crit_element=('Elemental Crit',slider([0,1])),
-      flat_raw_mod=input_box(0,label='Flat raw modifier'),
-      base_raw_mod=input_box(1,label='Base raw modifier'),
-      total_raw_mod=input_box(1,label='Total raw modifier'),
-      flat_ele_mod=input_box(0,label='Flat element modifier'),
-      base_ele_mod=input_box(1,label='Base element modifier'),
-      total_ele_mod=input_box(1,label='Total element modifier'),
+def _(base_raw = input_box(100,label='Weapon Raw'),
+      base_element = input_box(10,label='Weapon Element'),
+      sharpness = ('Sharpness level', slider(['R','Y','G','B','W','P'],default='G')),
+      motion_value = input_box(100,label='Total motion value'),
+      affinity = input_box(0,label='Affinity'),
+      crit_boost =('Critical Boost',slider([0,1,2,3])),
+      crit_element = ('Elemental Crit',slider([0,1])),
+      flat_raw_mod = input_box(0,label='Flat raw modifier'),
+      base_raw_mod = input_box(1,label='Base raw modifier'),
+      total_raw_mod = input_box(1,label='Total raw modifier'),
+      flat_ele_mod = input_box(0,label='Flat element modifier'),
+      base_ele_mod = input_box(1,label='Base element modifier'),
+      total_ele_mod = input_box(1,label='Total element modifier'),
+      eMV = input_box(1, label='\'eMV\''),
       rhz=('Raw HZV',slider(5,100,default=80,step_size=5)),
       ehz=('Ele HZV',slider(5,50,default=30,step_size=5))):
         #The comparison function
         f(raw_hz,ele_hz) = raw_vs_ele(raw_hz, ele_hz, 
                sharpness, motion_value, affinity, crit_boost, 
                crit_element, flat_raw_mod, base_raw_mod, total_raw_mod, 
-               flat_ele_mod, base_ele_mod, total_ele_mod)
+               flat_ele_mod, base_ele_mod, total_ele_mod*eMV)
         
         #Some metrics
         efr = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,flat_raw_mod,base_raw_mod,total_raw_mod),2)
@@ -1832,14 +1837,14 @@ def _(base_raw=input_box(100,label='Weapon Raw'),
         show(html(f'At the HZVs, MV, and total elemental modifier selected, each point of base raw on your weapon\
            is worth {round(f(rhz,ehz),2)} points of base element.'))
         show(html(f'''The weapon with the provided stats has an overall EFR of {efr} and an EFE of {efe}.
-              &lt;b&gt;Its effective raw-equivalent value (ERE) for the given MV and HZ is {ere}&lt;/b&gt;.'''))</code></pre></div><div class="nb-output" data-prompt-number="26" style="display: none;"><pre class="nb-text-output">Interactive function &lt;function _ at 0x313bf6940&gt; with 15 widgets
+              Its effective raw-equivalent value (ERE) for the given combat parameters is {ere}.'''))</code></pre></div><div class="nb-output" data-prompt-number="34" style="display: none;"><pre class="nb-text-output">Interactive function &lt;function _ at 0x3134bc0d0&gt; with 16 widgets
   base_raw: EvalText(value='100', description…</pre></div>
-  <div class="compute sagecell output_ffb412a1c873412da5b16fb1feded94e" style="display: none;">
+  <div class="compute sagecell output_1acb058ad2d042db92b06e3b7e633cbe" style="display: none;">
 
 <div class="sagecell-templates hide"></div>
-<div class="sagecell_output_elements" style="">
+<div class="sagecell_output_elements" style="display: none;">
     
-    <div class="sagecell_messages"><div>Accepted: {"name":"stderr","text":"  File \"/home/sc_serv/sage/src/sage/misc/decorators.py\", line 345, in my_wrap\n    return func(*args)\n           ^^^^^^^^^^^\n  File \"/home/sc_serv/sagecell/interact_sagecell.py\", line 444, in interact\n    update_interact(interact_id)\n  File \"/home/sc_serv/sagecell/interact_sagecell.py\", line 117, in update_interact\n    interact_info[\"function\"](control_vals=kwargs)\n  File \"/home/sc_serv/sagecell/interact_sagecell.py\", line 427, in adapted_f\n    returned = f(*args, **control_vals)\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/ipykernel_4002/876193917.py\", line 22, in _\n    __tmp__=var(\"raw_hz,ele_hz\"); f = symbolic_expression(raw_vs_ele(raw_hz, ele_hz,\n                                                         ^^^^^^^^^^\nNameError: name 'raw_vs_ele' is not defined\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/IPython/core/interactiveshell.py\", line 2052, in showtraceback\n    stb = self.InteractiveTB.structured_traceback(\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/IPython/core/ultratb.py\", line 1112, in structured_traceback\n    return FormattedTB.structured_traceback(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/IPython/core/ultratb.py\", line 1006, in structured_traceback\n    return VerboseTB.structured_traceback(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/IPython/core/ultratb.py\", line 859, in structured_traceback\n    formatted_exception = self.format_exception_as_a_whole(etype, evalue, etb, number_of_lines_of_context,\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/IPython/core/ultratb.py\", line 812, in format_exception_as_a_whole\n    frames.append(self.format_record(r))\n                  ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/IPython/core/ultratb.py\", line 730, in format_record\n    result += ''.join(_format_traceback_lines(frame_info.lines, Colors, self.has_colors, lvals))\n                                              ^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/utils.py\", line 144, in cached_property_wrapper\n    value = obj.__dict__[self.func.__name__] = self.func(obj)\n                                               ^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/core.py\", line 720, in lines\n    pieces = self.included_pieces\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/utils.py\", line 144, in cached_property_wrapper\n    value = obj.__dict__[self.func.__name__] = self.func(obj)\n                                               ^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/core.py\", line 663, in included_pieces\n    scope_pieces = self.scope_pieces\n                   ^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/utils.py\", line 144, in cached_property_wrapper\n    value = obj.__dict__[self.func.__name__] = self.func(obj)\n                                               ^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/core.py\", line 603, in scope_pieces\n    for piece in self.source.pieces\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/utils.py\", line 144, in cached_property_wrapper\n    value = obj.__dict__[self.func.__name__] = self.func(obj)\n                                               ^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/core.py\", line 101, in pieces\n    return list(self._clean_pieces())\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/stack_data/core.py\", line 125, in _clean_pieces\n    raise AssertionError(\"Pieces mismatches: %s\" % mismatches)\nAssertionError: Pieces mismatches: [{22, 23}]\n"}</div><div>Accepted: {"name":"stderr","text":"Traceback (most recent call last):\n  File \"/home/sc_serv/sage/local/var/lib/sage/venv-python3.11.1/lib/python3.11/site-packages/IPython/core/interactiveshell.py\", line 3433, in run_code\n    exec(code_obj, self.user_global_ns, self.user_ns)\n  File \"/tmp/ipykernel_4002/876193917.py\", line 5, in &lt;module&gt;\n    @interact\n     ^^^^^^^^\n"}</div><div>Accepted: {"name":"stdout","text":"Unexpected exception formatting exception. Falling back to standard exception\n"}</div><div>Accepted: {"name":"stdout","text":"Interact state: {'base_raw': '100', 'base_element': '10', 'sharpness': 2, 'motion_value': '100', 'affinity': '0', 'crit_boost': 0, 'crit_element': 0, 'flat_raw_mod': '0', 'base_raw_mod': '1', 'total_raw_mod': '1', 'flat_ele_mod': '0', 'base_ele_mod': '1', 'total_ele_mod': '1', 'rhz': 15, 'ehz': 5}\n"}</div><div>Accepted: {"data":{"application/sage-clear":{"changed":["base_raw","base_element","sharpness","motion_value","affinity","crit_boost","crit_element","flat_raw_mod","base_raw_mod","total_raw_mod","flat_ele_mod","base_ele_mod","total_ele_mod","rhz","ehz"]},"text/plain":"Clear display"},"source":"sagecell"}</div><div>Accepted: {"data":{"application/sage-interact":{"new_interact_id":"837b85ac-6345-44dc-8a98-871ced39bf14","controls":{"base_raw":{"control_type":"input_box","subtype":"input","default":"100","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Weapon Raw","update":true},"base_element":{"control_type":"input_box","subtype":"input","default":"10","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Weapon Element","update":true},"sharpness":{"control_type":"slider","subtype":"discrete","display_value":true,"default":2,"range":[0,5],"values":["'R'","'Y'","'G'","'B'","'W'","'P'"],"step":1,"raw":true,"label":"Sharpness level","update":true},"motion_value":{"control_type":"input_box","subtype":"input","default":"100","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Total motion value","update":true},"affinity":{"control_type":"input_box","subtype":"input","default":"0","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Affinity","update":true},"crit_boost":{"control_type":"slider","subtype":"discrete","display_value":true,"default":0,"range":[0,3],"values":["0","1","2","3"],"step":1,"raw":true,"label":"Critical Boost","update":true},"crit_element":{"control_type":"slider","subtype":"discrete","display_value":true,"default":0,"range":[0,1],"values":["0","1"],"step":1,"raw":true,"label":"Elemental Crit","update":true},"flat_raw_mod":{"control_type":"input_box","subtype":"input","default":"0","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Flat raw modifier","update":true},"base_raw_mod":{"control_type":"input_box","subtype":"input","default":"1","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Base raw modifier","update":true},"total_raw_mod":{"control_type":"input_box","subtype":"input","default":"1","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Total raw modifier","update":true},"flat_ele_mod":{"control_type":"input_box","subtype":"input","default":"0","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Flat element modifier","update":true},"base_ele_mod":{"control_type":"input_box","subtype":"input","default":"1","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Base element modifier","update":true},"total_ele_mod":{"control_type":"input_box","subtype":"input","default":"1","width":80,"height":1,"evaluate":true,"keypress":false,"label":"Total element modifier","update":true},"rhz":{"control_type":"slider","subtype":"discrete","display_value":true,"default":15,"range":[0,19],"values":["5","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","95","100"],"step":1,"raw":true,"label":"Raw HZV","update":true},"ehz":{"control_type":"slider","subtype":"discrete","display_value":true,"default":5,"range":[0,9],"values":["5","10","15","20","25","30","35","40","45","50"],"step":1,"raw":true,"label":"Ele HZV","update":true}},"layout":[[["base_raw",1]],[["base_element",1]],[["sharpness",1]],[["motion_value",1]],[["affinity",1]],[["crit_boost",1]],[["crit_element",1]],[["flat_raw_mod",1]],[["base_raw_mod",1]],[["total_raw_mod",1]],[["flat_ele_mod",1]],[["base_ele_mod",1]],[["total_ele_mod",1]],[["rhz",1]],[["ehz",1]],[["_output",1]]],"locations":null,"readonly":false},"text/plain":"Sage Interact"},"source":"sagecell"}</div>
+    <div class="sagecell_messages">
         <hr>
         <span style="font-size: large; font-weight: bold">Messages</span>
         <br><br>
@@ -1851,26 +1856,27 @@ var('flat_raw_mod,base_raw_mod,total_raw_mod,flat_ele_mod,base_ele_mod,total_ele
 var('t')
 
 @interact
-def _(base_raw=input_box(100,label='Weapon Raw'),
-      base_element=input_box(10,label='Weapon Element'),
-      sharpness=('Sharpness level', slider(['R','Y','G','B','W','P'],default='G')),
-      motion_value=input_box(100,label='Total motion value'),
-      affinity=input_box(0,label='Affinity'),
-      crit_boost=('Critical Boost',slider([0,1,2,3])),
-      crit_element=('Elemental Crit',slider([0,1])),
-      flat_raw_mod=input_box(0,label='Flat raw modifier'),
-      base_raw_mod=input_box(1,label='Base raw modifier'),
-      total_raw_mod=input_box(1,label='Total raw modifier'),
-      flat_ele_mod=input_box(0,label='Flat element modifier'),
-      base_ele_mod=input_box(1,label='Base element modifier'),
-      total_ele_mod=input_box(1,label='Total element modifier'),
+def _(base_raw = input_box(100,label='Weapon Raw'),
+      base_element = input_box(10,label='Weapon Element'),
+      sharpness = ('Sharpness level', slider(['R','Y','G','B','W','P'],default='G')),
+      motion_value = input_box(100,label='Total motion value'),
+      affinity = input_box(0,label='Affinity'),
+      crit_boost =('Critical Boost',slider([0,1,2,3])),
+      crit_element = ('Elemental Crit',slider([0,1])),
+      flat_raw_mod = input_box(0,label='Flat raw modifier'),
+      base_raw_mod = input_box(1,label='Base raw modifier'),
+      total_raw_mod = input_box(1,label='Total raw modifier'),
+      flat_ele_mod = input_box(0,label='Flat element modifier'),
+      base_ele_mod = input_box(1,label='Base element modifier'),
+      total_ele_mod = input_box(1,label='Total element modifier'),
+      eMV = input_box(1, label='\'eMV\''),
       rhz=('Raw HZV',slider(5,100,default=80,step_size=5)),
       ehz=('Ele HZV',slider(5,50,default=30,step_size=5))):
         #The comparison function
         f(raw_hz,ele_hz) = raw_vs_ele(raw_hz, ele_hz, 
                sharpness, motion_value, affinity, crit_boost, 
                crit_element, flat_raw_mod, base_raw_mod, total_raw_mod, 
-               flat_ele_mod, base_ele_mod, total_ele_mod)
+               flat_ele_mod, base_ele_mod, total_ele_mod*eMV)
         
         #Some metrics
         efr = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,flat_raw_mod,base_raw_mod,total_raw_mod),2)
@@ -1890,7 +1896,7 @@ def _(base_raw=input_box(100,label='Weapon Raw'),
         show(html(f'At the HZVs, MV, and total elemental modifier selected, each point of base raw on your weapon\
            is worth {round(f(rhz,ehz),2)} points of base element.'))
         show(html(f'''The weapon with the provided stats has an overall EFR of {efr} and an EFE of {efe}.
-              <b>Its effective raw-equivalent value (ERE) for the given MV and HZ is {ere}</b>.'''))
+              Its effective raw-equivalent value (ERE) for the given combat parameters is {ere}.'''))
 </script>
   </div></div></div></div></div>
 
@@ -1904,7 +1910,7 @@ def _(base_raw=input_box(100,label='Weapon Raw'),
   <script src="https://dahn-research.eu/nbplayer/nbplayerConfig.js"></script>
   <script src="https://dahn-research.eu/nbplayer/js/nbrunner.min.js"></script>
   <script>
-    playerConfig={"panes":"ExecRead","lang":"sage","linked":true,"eval":false,"hide":["fullScreen"],"execute":true,"showRead":true,"collapsable":false,"playerPath":"https://dahn-research.eu/nbplayer","name":"Monster Hunter Wilds formulas-Copy1-3"};
+    playerConfig={"panes":"ExecRead","lang":"sage","linked":true,"eval":false,"hide":["fullScreen"],"execute":true,"showRead":true,"collapsable":false,"playerPath":"https://dahn-research.eu/nbplayer","name":"Monster Hunter Wilds formulas-Copy1-5"};
     playerMode={"showSage":true,"showNotebookInput":true,"showSageInput":true};
     makeMenu();
     localize();
