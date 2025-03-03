@@ -1673,14 +1673,14 @@ mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
   font-family: MJXTEX-VB;
   src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
 }
-</style><style type="text/css">.output_b9e3835203364ce987058c7bdcce6a40 .sagecell_messages, .output_b9e3835203364ce987058c7bdcce6a40 .sagecell_permalink {display: none;}</style><style type="text/css">.output_1acb058ad2d042db92b06e3b7e633cbe .sagecell_messages, .output_1acb058ad2d042db92b06e3b7e633cbe .sagecell_permalink {display: none;}</style></head>
+</style><style type="text/css">.output_682f6033278f4f7eaa645dae48f6b2cd .sagecell_messages, .output_682f6033278f4f7eaa645dae48f6b2cd .sagecell_permalink {display: none;}</style><style type="text/css">.output_a3fe55b29dd64bd090198fb55654906d .sagecell_messages, .output_a3fe55b29dd64bd090198fb55654906d .sagecell_permalink {display: none;}</style></head>
 <body>
 <div id="main">
             
             
             
             <div id="notebook-holder"><div class="nb-notebook"><div class="nb-worksheet"><div class="nb-cell nb-markdown-cell"><h2 id="damage-formulas-update-after-verifying-some-values">Damage formulas (update after verifying some values)</h2>
-</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="30" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#Variables
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="45" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">#Variables
 base_raw,base_element = var('B_r,B_e')
 
 #Rise functions and data (melee)
@@ -1727,7 +1727,7 @@ def raw_vs_ele(raw_hz, ele_hz, sharpness='G', motion_value=100,
     if ele_hz==0: return 10
     else: ratio = (solve(efr-efe,base_element)[0]/base_raw).rhs()
     return ratio</code></pre></div>
-  <div class="compute sagecell output_b9e3835203364ce987058c7bdcce6a40" style="display: none;">
+  <div class="compute sagecell output_682f6033278f4f7eaa645dae48f6b2cd" style="display: none;">
 
 <div class="sagecell-templates hide"></div>
 <div class="sagecell_output_elements" style="display: none;">
@@ -1790,9 +1790,9 @@ def raw_vs_ele(raw_hz, ele_hz, sharpness='G', motion_value=100,
   </div></div><div class="nb-cell nb-markdown-cell"><h2 id="simulation">Simulation</h2>
 </div><div class="nb-cell nb-markdown-cell"><ul>
 <li>Use Total Elemental Modifier to enter whatever appropriate modifiers are coming from skills.</li>
-<li>Use eMV to, in addition, account for the total elemental modifier coming from a sequence of moves being analyzed. This parameter is only here to simplify calculation of EFE vs ERE.</li>
+<li>Use eMV to account for the total elemental modifier coming from a sequence of moves being analyzed. This parameter is only here to simplify calculation of EFE vs ERE. E.g, if you analyze three moves with elemental modifiers of 1, 1, and 0.7, then you input 2.7 for eMV.</li>
 </ul>
-</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="34" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">var('raw_hz,ele_hz,sharpness,motion_value,affinity,crit_boost,crit_element')
+</div><div class="nb-cell nb-code-cell"><div class="nb-input" data-prompt-number="56" style="display: none;"><pre class=" language-sage"><code class=" language-sage" data-language="sage">var('raw_hz,ele_hz,sharpness,motion_value,affinity,crit_boost,crit_element')
 var('flat_raw_mod,base_raw_mod,total_raw_mod,flat_ele_mod,base_ele_mod,total_ele_mod')
 var('t')
 
@@ -1822,7 +1822,7 @@ def _(base_raw = input_box(100,label='Weapon Raw'),
         #Some metrics
         efr = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,flat_raw_mod,base_raw_mod,total_raw_mod),2)
         efe = round(eff_ele_dmg(base_element, sharpness, 100, affinity, crit_element, flat_ele_mod, base_ele_mod, total_ele_mod),2)
-        ere = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,1/f(rhz,ehz)*base_element,base_raw_mod,total_raw_mod),2)
+        ere = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,1/f(rhz,ehz)*base_element*eMV,base_raw_mod,total_raw_mod),2)
         
         #Set up the display (2D)
         rhz_region = region_plot(f(raw_hz,ele_hz)&gt;=1,(raw_hz,5,100),(ele_hz,5,50),incol='lightgreen')
@@ -1837,9 +1837,9 @@ def _(base_raw = input_box(100,label='Weapon Raw'),
         show(html(f'At the HZVs, MV, and total elemental modifier selected, each point of base raw on your weapon\
            is worth {round(f(rhz,ehz),2)} points of base element.'))
         show(html(f'''The weapon with the provided stats has an overall EFR of {efr} and an EFE of {efe}.
-              Its effective raw-equivalent value (ERE) for the given combat parameters is {ere}.'''))</code></pre></div><div class="nb-output" data-prompt-number="34" style="display: none;"><pre class="nb-text-output">Interactive function &lt;function _ at 0x3134bc0d0&gt; with 16 widgets
+              &lt;b&gt;Its effective raw-equivalent value (ERE) for the given combat parameters is {ere}.&lt;/b&gt;'''))</code></pre></div><div class="nb-output" data-prompt-number="56" style="display: none;"><pre class="nb-text-output">Interactive function &lt;function _ at 0x313ea23a0&gt; with 16 widgets
   base_raw: EvalText(value='100', description…</pre></div>
-  <div class="compute sagecell output_1acb058ad2d042db92b06e3b7e633cbe" style="display: none;">
+  <div class="compute sagecell output_a3fe55b29dd64bd090198fb55654906d" style="display: none;">
 
 <div class="sagecell-templates hide"></div>
 <div class="sagecell_output_elements" style="display: none;">
@@ -1881,7 +1881,7 @@ def _(base_raw = input_box(100,label='Weapon Raw'),
         #Some metrics
         efr = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,flat_raw_mod,base_raw_mod,total_raw_mod),2)
         efe = round(eff_ele_dmg(base_element, sharpness, 100, affinity, crit_element, flat_ele_mod, base_ele_mod, total_ele_mod),2)
-        ere = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,1/f(rhz,ehz)*base_element,base_raw_mod,total_raw_mod),2)
+        ere = round(eff_raw_dmg(base_raw,sharpness,100,100,affinity,crit_boost,1/f(rhz,ehz)*base_element*eMV,base_raw_mod,total_raw_mod),2)
         
         #Set up the display (2D)
         rhz_region = region_plot(f(raw_hz,ele_hz)>=1,(raw_hz,5,100),(ele_hz,5,50),incol='lightgreen')
@@ -1896,7 +1896,7 @@ def _(base_raw = input_box(100,label='Weapon Raw'),
         show(html(f'At the HZVs, MV, and total elemental modifier selected, each point of base raw on your weapon\
            is worth {round(f(rhz,ehz),2)} points of base element.'))
         show(html(f'''The weapon with the provided stats has an overall EFR of {efr} and an EFE of {efe}.
-              Its effective raw-equivalent value (ERE) for the given combat parameters is {ere}.'''))
+              <b>Its effective raw-equivalent value (ERE) for the given combat parameters is {ere}.</b>'''))
 </script>
   </div></div></div></div></div>
 
@@ -1910,7 +1910,7 @@ def _(base_raw = input_box(100,label='Weapon Raw'),
   <script src="https://dahn-research.eu/nbplayer/nbplayerConfig.js"></script>
   <script src="https://dahn-research.eu/nbplayer/js/nbrunner.min.js"></script>
   <script>
-    playerConfig={"panes":"ExecRead","lang":"sage","linked":true,"eval":false,"hide":["fullScreen"],"execute":true,"showRead":true,"collapsable":false,"playerPath":"https://dahn-research.eu/nbplayer","name":"Monster Hunter Wilds formulas-Copy1-5"};
+    playerConfig={"panes":"ExecRead","lang":"sage","linked":true,"eval":false,"hide":["fullScreen"],"execute":true,"showRead":true,"collapsable":false,"playerPath":"https://dahn-research.eu/nbplayer","name":"Monster Hunter Wilds formulas-Copy1-6"};
     playerMode={"showSage":true,"showNotebookInput":true,"showSageInput":true};
     makeMenu();
     localize();
